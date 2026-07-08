@@ -1,0 +1,71 @@
+---
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Invitación de Baby Shower" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Forum&family=Pinyon+Script&display=swap" rel="stylesheet">
+	</head>
+	<body class="antialiased min-h-screen overflow-x-hidden text-[#826c4f]">
+		<div class="fixed inset-0 -z-10 w-screen h-screen overflow-hidden bg-[#e8f1f8]">
+			<!-- Imagen estirada y muy borrosa para rellenar los espacios en desktop -->
+			<img 
+				src="/poo6.png" 
+				alt="" 
+				class="absolute inset-0 w-full h-full object-cover object-center hidden md:block blur-2xl scale-110 "
+			/>
+			
+			<!-- Imagen principal (cover en móvil, contain nítido en desktop, ligeramente agrandada) -->
+			<img 
+				src="/poo7.jpg" 
+				alt="Fondo Baby Shower" 
+				class="absolute inset-0 w-full h-full object-cover md:object-contain md:scale-[1.15] md:origin-center object-center drop-shadow-2xl opacity-30 transition-all duration-500"
+				onerror="this.src='https://images.unsplash.com/photo-1519689680058-324335c77eba?q=80&w=2070&auto=format&fit=crop'"
+			/>
+
+			<!-- Capa oscura sutil eliminada o súper sutil para que el texto resalte pero sin oscurecer mucho -->
+			<div class="absolute inset-0 bg-slate-900/5 pointer-events-none"></div>
+		</div>
+
+		<main class="relative z-10 w-full min-h-screen">
+			<slot />
+		</main>
+
+		<style is:global>
+			/* Configuraciones globales adicionales */
+			body {
+				font-family: 'Forum', serif;
+			}
+			
+			.font-script {
+				font-family: 'Pinyon Script', cursive;
+				-webkit-text-stroke: 0.6px currentColor;
+			}
+			
+			/* Ocultar barra de navegación de forma estética */
+			.no-scrollbar::-webkit-scrollbar {
+				display: none;
+			}
+			.no-scrollbar {
+				-ms-overflow-style: none;
+				scrollbar-width: none;
+			}
+		</style>
+	</body>
+</html>

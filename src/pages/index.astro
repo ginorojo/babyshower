@@ -1,0 +1,113 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Wishlist from '../components/Wishlist';
+---
+
+<Layout title="Baby Shower - ¡Te Invitamos!">
+	<!-- Contenedor general en el scroll de la página -->
+	<div class="w-full max-w-[420px] mx-auto px-4 py-16 flex flex-col items-center gap-12">
+		
+		<!-- Encabezado enmarcado (Marco + Título + Imagen Pequeña) -->
+		<div class="relative w-full flex flex-col items-center text-center text-[#826c4f] px-10 pt-16 pb-16">
+			<!-- El Marco de Imagen -->
+			<img 
+				src="/marco.png" 
+				class="absolute inset-0 w-full h-full object-fill pointer-events-none -z-10" 
+				alt="Marco" 
+			/>
+			
+			<header class="w-full">
+				<h1 class="text-6xl md:text-7xl font-script lowercase leading-none drop-shadow-sm">
+					baby 
+				</h1>
+				<h1 class="text-6xl md:text-7xl font-script lowercase leading-none drop-shadow-sm">
+					shower
+				</h1>
+				<p class="text-sm uppercase font-bold tracking-widest mt-2">
+					de thiago rojo romero
+				</p>
+				<img src="/pooh_balloon.png" alt="Winnie the Pooh" class="w-22 h-auto mx-auto my-4" />
+
+			</header>
+
+		</div>
+		<section>
+			<p class="text-xl font-medium mt-4 max-w-xs mx-auto leading-relaxed opacity-90 flex justyfy-center items-center text-center">
+					El amor se multiplica y en nuestra familia habrá una sonrisa más iluminando nuestras vidas.
+				</p>
+			</section>
+		
+		<!-- Sección ¿Cuándo? Enmarcada -->
+		<div class="relative w-full flex flex-col items-center text-center text-[#826c4f] px-10 pt-16 pb-16">
+			<!-- El Marco de Imagen -->
+			<img 
+				src="/marcodonde_transparent.png" 
+				class="absolute inset-0 w-full h-full object-fill pointer-events-none -z-10 " 
+				alt="Marco" 
+			/>
+			
+			<h2 class="text-5xl md:text-6xl font-script lowercase leading-none drop-shadow-sm">
+				¿cuando?
+			</h2>
+			<p class="text-xl font-medium mt-4 max-w-xs mx-auto leading-relaxed">
+				10 de Agosto 2026,
+			</p>
+			<p class="text-md font-medium mt-4 max-w-xs mx-auto leading-relaxed">
+				a las 16:00 hrs.
+			</p>
+			<img src="/pooh_friends.png" alt="Pooh y sus amigos" class="w-45 h-auto mx-auto mt-6" />
+		</div>
+
+		<!-- Sección ¿Dónde? Enmarcada -->
+		<div class="relative w-full flex flex-col items-center text-center text-[#826c4f] px-10 pt-16 pb-16">
+			<!-- El Marco de Imagen -->
+			<img 
+				src="/marcodonde_transparent.png" 
+				class="absolute inset-0 w-full h-full object-fill pointer-events-none -z-10" 
+				alt="Marco" 
+			/>
+			
+			<h2 class="text-5xl md:text-6xl font-script lowercase leading-none drop-shadow-sm">
+				¿donde?
+			</h2>
+			
+			<div class="space-y-1.5 text-sm mt-4 mb-3 font-medium text-md">
+				<p><span class="font-bold">Lugar:</span> Capilla Barrio Brillador</p>
+				<p><span class="font-bold">Dirección:</span> Nicaragua 1913, La Serena</p>
+			</div>
+			
+			<a 
+				href="https://maps.app.goo.gl/kDR9D2xmJSHXQ47Q8" 
+				target="_blank" 
+				rel="noopener noreferrer" 
+				class="inline-block px-4 py-2 text-xs uppercase font-bold tracking-widest rounded bg-[#826c4f] text-white hover:bg-[#6e5a40] transition-colors shadow-sm mb-4"
+			>
+				Ver Ubicación
+			</a>
+			
+			<img src="/friends.png" alt="Pooh y sus amigos" class="w-45 h-auto mx-auto mt-2" />
+		</div>
+
+		<!-- Componente Interactivo de la Mesa de Regalos -->
+		<section class="w-full">
+			<Wishlist client:load />
+		</section>
+
+		
+
+		<!-- Mensaje de Invitación Emotivo -->
+		<section class="w-full px-2 text-center text-[#826c4f]">
+			<p class="text-sm font-medium leading-relaxed max-w-xs mx-auto">
+				Estamos felices de compartir con ustedes la alegría de que nuestra familia crece. Ya falta muy poco para la llegada de Thiago y nos encantaría celebrar su dulce espera rodeados del cariño de nuestros amigos y familiares más cercanos.
+			</p>
+			<p class="text-sm font-bold mt-4 tracking-wide uppercase">
+				¡Los esperamos para compartir una tarde muy especial!
+			</p>
+		</section>
+
+		<!-- Pie de página -->
+		<footer class="text-slate-600 font-medium text-[10px] text-center">
+			<p>Hecho con amor para el Baby Shower.</p>
+		</footer>
+	</div>
+</Layout>
