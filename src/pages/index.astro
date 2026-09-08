@@ -1,14 +1,103 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Wishlist from '../components/Wishlist';
+import Countdown from '../components/Countdown';
 ---
 
 <Layout title="Baby Shower - ¡Te Invitamos!">
+	<!-- Sobre de la Invitación (Capa Superior) -->
+	<div id="envelope-container" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#e8f1f8] transition-all duration-1000 ease-in-out" style="perspective: 1000px;">
+		
+		<!-- El Sobre Físico -->
+		<div id="envelope-wrapper" class="relative w-[340px] h-[240px] transition-all duration-1000 ease-in-out mt-16">
+			
+			<!-- Solapa Superior (Flap) que se abrirá rotando hacia arriba -->
+			<div 
+				id="envelope-flap" 
+				class="absolute top-0 left-0 w-full h-[110px] bg-[#d3bc92] z-30 origin-top transition-transform duration-700 ease-in-out shadow-md"
+				style="clip-path: polygon(0 0, 100% 0, 50% 100%);"
+			></div>
+			
+			<!-- Parte Trasera del Sobre (Bolsillo interior) -->
+			<div class="absolute inset-0 bg-[#c7af85] rounded-b-2xl -z-20 shadow-inner"></div>
+			
+			<!-- Tarjeta de Invitación en miniatura (Se desliza hacia arriba) -->
+			<div 
+				id="envelope-card" 
+				class="absolute top-[10px] left-[15px] w-[310px] h-[220px] bg-[#fbf9f4] border border-[#826c4f]/25 rounded-xl p-4 z-10 transition-all duration-1000 ease-in-out shadow-lg text-center flex flex-col justify-between"
+				style="transform: translateY(0);"
+			>
+				<div class="absolute inset-0 border-4 border-double border-[#826c4f]/10 rounded-xl pointer-events-none"></div>
+				
+				<div class="text-[8px] uppercase font-bold tracking-widest text-[#826c4f] opacity-80 mt-1">Invitación Especial</div>
+				
+				<div class="flex flex-col items-center gap-0.5 my-auto">
+					<h1 class="text-3xl font-script lowercase leading-none text-[#826c4f]">baby shower</h1>
+					<p class="text-[9px] uppercase font-bold tracking-wider text-[#826c4f] mt-0.5">de thiago</p>
+					<img src="/pooh_balloon.png" alt="Pooh" class="w-12 h-auto mt-1" />
+				</div>
+				
+				<div class="text-[8px] text-[#826c4f]/70 uppercase tracking-wider font-bold mb-1">Con Cariño</div>
+			</div>
+			
+			<!-- Parte Delantera del Sobre (Bolsillo con corte en V) -->
+			<div 
+				class="absolute inset-0 bg-[#ebdcb9] rounded-b-2xl z-20 border-b border-r border-l border-[#826c4f]/15 shadow-md"
+				style="clip-path: polygon(0 35%, 50% 70%, 100% 35%, 100% 100%, 0 100%);"
+			></div>
+			
+			<!-- Sello de Cera / Botón de abrir -->
+			<button 
+				id="open-envelope-btn"
+				class="absolute top-[110px] left-[50%] -translate-x-1/2 -translate-y-1/2 z-40 bg-[#826c4f] hover:bg-[#6e5a40] text-[#ebdcb9] font-serif text-[10px] uppercase font-bold tracking-widest w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all duration-500 hover:scale-105 active:scale-95 cursor-pointer border border-[#ebdcb9]/40"
+			>
+				Abrir
+			</button>
+		</div>
+		
+		<p id="envelope-hint" class="text-[#826c4f] text-[10px] uppercase font-bold tracking-widest mt-12 opacity-80 font-serif animate-bounce">
+			Presiona el sello para abrir
+		</p>
+	</div>
+
+	<!-- Marcamos que hay JavaScript ANTES de que se dibuje el contenido. Así, si
+	     alguien entra con JS desactivado, todo se ve normal en vez de quedar
+	     invisible para siempre esperando una animación que nunca llega. -->
+	<script is:inline>document.documentElement.classList.add('con-js');</script>
+
+	<!-- Canción de fondo. Empieza al abrir el sobre: los navegadores solo dejan
+	     sonar audio si viene de un toque de la persona, y ese toque es el sello.
+	     Reemplaza public/musica.mp3 por la canción que quieras. -->
+	<audio id="musica" src="/musica.mp3" loop preload="auto"></audio>
+
+	<!-- Botón para silenciar. Aparece recién cuando se abre el sobre, y existe
+	     porque mucha gente abrirá la invitación en la micro o en el trabajo. -->
+	<button
+		id="boton-musica"
+		type="button"
+		aria-label="Silenciar la música"
+		aria-pressed="false"
+		class="fixed top-4 right-4 z-40 w-12 h-12 rounded-full bg-[#826c4f] border border-[#ebdcb9]/50 text-[#ebdcb9] shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500 hover:bg-[#6e5a40] cursor-pointer"
+	>
+		<!-- Altavoz con ondas: sonando -->
+		<svg id="icono-sonando" xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+			<path d="M11 5 6 9H2v6h4l5 4z"/>
+			<path d="M15.5 8.5a5 5 0 0 1 0 7"/>
+			<path d="M19 5a9 9 0 0 1 0 14"/>
+		</svg>
+		<!-- Altavoz tachado: silenciado -->
+		<svg id="icono-silencio" class="hidden" xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+			<path d="M11 5 6 9H2v6h4l5 4z"/>
+			<path d="m22 9-6 6"/>
+			<path d="m16 9 6 6"/>
+		</svg>
+	</button>
+
 	<!-- Contenedor general en el scroll de la página -->
 	<div class="w-full max-w-[420px] mx-auto px-4 py-16 flex flex-col items-center gap-12">
-		
+
 		<!-- Encabezado enmarcado (Marco + Título + Imagen Pequeña) -->
-		<div class="relative w-full flex flex-col items-center text-center text-[#826c4f] px-10 pt-16 pb-16">
+		<div class="revelar relative w-full flex flex-col items-center text-center text-[#826c4f] px-10 pt-16 pb-16">
 			<!-- El Marco de Imagen -->
 			<img 
 				src="/marco.png" 
@@ -17,13 +106,13 @@ import Wishlist from '../components/Wishlist';
 			/>
 			
 			<header class="w-full">
-				<h1 class="text-6xl md:text-7xl font-script lowercase leading-none drop-shadow-sm">
-					baby 
+				<h1 class="escritura-portada text-6xl md:text-7xl font-script lowercase leading-none drop-shadow-sm">
+					baby
 				</h1>
-				<h1 class="text-6xl md:text-7xl font-script lowercase leading-none drop-shadow-sm">
+				<h1 class="escritura-portada text-6xl md:text-7xl font-script lowercase leading-none drop-shadow-sm" style="--retraso: 0.55s">
 					shower
 				</h1>
-				<p class="text-sm uppercase font-bold tracking-widest mt-2">
+				<p data-letras class="text-sm uppercase font-bold tracking-widest mt-2">
 					de thiago rojo romero
 				</p>
 				<img src="/pooh_balloon.png" alt="Winnie the Pooh" class="w-22 h-auto mx-auto my-4" />
@@ -31,14 +120,14 @@ import Wishlist from '../components/Wishlist';
 			</header>
 
 		</div>
-		<section>
+		<section class="revelar">
 			<p class="text-xl font-medium mt-4 max-w-xs mx-auto leading-relaxed opacity-90 flex justyfy-center items-center text-center">
-					El amor se multiplica y en nuestra familia habrá una sonrisa más iluminando nuestras vidas.
+					"El amor se multiplica y en nuestra familia habrá una sonrisa más iluminando nuestras vidas".
 				</p>
 			</section>
 		
 		<!-- Sección ¿Cuándo? Enmarcada -->
-		<div class="relative w-full flex flex-col items-center text-center text-[#826c4f] px-10 pt-16 pb-16">
+		<div class="revelar relative w-full flex flex-col items-center text-center text-[#826c4f] px-10 pt-16 pb-16">
 			<!-- El Marco de Imagen -->
 			<img 
 				src="/marcodonde_transparent.png" 
@@ -46,20 +135,18 @@ import Wishlist from '../components/Wishlist';
 				alt="Marco" 
 			/>
 			
-			<h2 class="text-5xl md:text-6xl font-script lowercase leading-none drop-shadow-sm">
+			<h2 class="escritura-scroll text-5xl md:text-6xl font-script lowercase leading-none drop-shadow-sm">
 				¿cuando?
 			</h2>
-			<p class="text-xl font-medium mt-4 max-w-xs mx-auto leading-relaxed">
-				10 de Agosto 2026,
+			<p class="text-sm font-medium mt-4 max-w-xs mx-auto leading-relaxed">
+				Sábado 10 de Octubre 2026, a las 16:00 hrs
 			</p>
-			<p class="text-md font-medium mt-4 max-w-xs mx-auto leading-relaxed">
-				a las 16:00 hrs.
-			</p>
-			<img src="/pooh_friends.png" alt="Pooh y sus amigos" class="w-45 h-auto mx-auto mt-6" />
+			<Countdown client:load />
+			<img src="/pooh_friends.png" alt="Pooh y sus amigos" class="w-36 h-auto mx-auto mt-6" />
 		</div>
 
 		<!-- Sección ¿Dónde? Enmarcada -->
-		<div class="relative w-full flex flex-col items-center text-center text-[#826c4f] px-10 pt-16 pb-16">
+		<div class="revelar relative w-full flex flex-col items-center text-center text-[#826c4f] px-10 pt-16 pb-16">
 			<!-- El Marco de Imagen -->
 			<img 
 				src="/marcodonde_transparent.png" 
@@ -67,11 +154,11 @@ import Wishlist from '../components/Wishlist';
 				alt="Marco" 
 			/>
 			
-			<h2 class="text-5xl md:text-6xl font-script lowercase leading-none drop-shadow-sm">
+			<h2 class="escritura-scroll text-5xl md:text-6xl font-script lowercase leading-none drop-shadow-sm">
 				¿donde?
 			</h2>
 			
-			<div class="space-y-1.5 text-sm mt-4 mb-3 font-medium text-md">
+			<div class="space-y-1.5 text-md mt-4 mb-3 font-medium text-md">
 				<p><span class="font-bold">Lugar:</span> Capilla Barrio Brillador</p>
 				<p><span class="font-bold">Dirección:</span> Nicaragua 1913, La Serena</p>
 			</div>
@@ -89,25 +176,330 @@ import Wishlist from '../components/Wishlist';
 		</div>
 
 		<!-- Componente Interactivo de la Mesa de Regalos -->
-		<section class="w-full">
+		<section class="revelar-suave w-full">
 			<Wishlist client:load />
 		</section>
 
 		
 
 		<!-- Mensaje de Invitación Emotivo -->
-		<section class="w-full px-2 text-center text-[#826c4f]">
-			<p class="text-sm font-medium leading-relaxed max-w-xs mx-auto">
+		<section class="revelar w-full px-2 text-center text-[#826c4f]">
+			<p class="text-xl font-medium leading-relaxed max-w-xs mx-auto">
 				Estamos felices de compartir con ustedes la alegría de que nuestra familia crece. Ya falta muy poco para la llegada de Thiago y nos encantaría celebrar su dulce espera rodeados del cariño de nuestros amigos y familiares más cercanos.
 			</p>
-			<p class="text-sm font-bold mt-4 tracking-wide uppercase">
+			<p class="text-xl font-bold mt-4 tracking-wide uppercase">
 				¡Los esperamos para compartir una tarde muy especial!
 			</p>
 		</section>
 
 		<!-- Pie de página -->
-		<footer class="text-slate-600 font-medium text-[10px] text-center">
+		<footer class="revelar text-slate-600 font-medium text-[10px] text-center">
 			<p>Hecho con amor para el Baby Shower.</p>
 		</footer>
 	</div>
 </Layout>
+
+<style is:global>
+	/* Aparición al hacer scroll.
+	   Todo esto cuelga de .con-js: sin JavaScript no se aplica nada y la
+	   página se ve completa, como siempre. */
+
+	.con-js .revelar,
+	.con-js .revelar-suave {
+		opacity: 0;
+		transition:
+			opacity 0.8s ease-out,
+			transform 0.8s ease-out;
+	}
+
+	.con-js .revelar {
+		transform: translateY(28px);
+	}
+
+	/* .revelar-suave es solo desvanecido, sin desplazamiento, y lo usa la mesa
+	   de regalos a propósito: un ancestro con `transform` haría que la barra
+	   fija del carrito se posicione respecto a esa sección en vez de la
+	   pantalla, y quedaría flotando en medio de la página. `opacity` no tiene
+	   ese efecto secundario. */
+
+	.con-js .revelar.visible,
+	.con-js .revelar-suave.visible {
+		opacity: 1;
+		transform: none;
+	}
+
+	/* ------------------------------------------------------------------
+	   Los títulos en cursiva se "escriben" de izquierda a derecha, como si
+	   los trazara una pluma. Se logra descubriendo el texto con clip-path.
+	   ------------------------------------------------------------------ */
+
+	.con-js .escritura-portada,
+	.con-js .escritura-scroll {
+		/* Los -30% de arriba y abajo dejan aire para las colas y los rulos de
+		   la caligrafía, que se salen de la caja de la letra y si no quedarían
+		   cortados. */
+		clip-path: inset(-30% 100% -30% 0);
+	}
+
+	/* Los del encabezado esperan a que se abra el sobre. Si no, se escribirían
+	   escondidos detrás y nadie los vería. */
+	.con-js.sobre-abierto .escritura-portada,
+	.con-js .revelar.visible .escritura-scroll {
+		animation: escribir 1.15s cubic-bezier(0.33, 0, 0.2, 1) forwards;
+		animation-delay: var(--retraso, 0s);
+	}
+
+	@keyframes escribir {
+		to {
+			clip-path: inset(-30% -10% -30% 0);
+		}
+	}
+
+	/* El subtítulo aparece letra por letra, subiendo. */
+	.con-js .letra {
+		display: inline-block;
+		opacity: 0;
+		transform: translateY(0.45em);
+	}
+
+	.con-js.sobre-abierto .letra {
+		animation: subirLetra 0.5s ease-out forwards;
+		/* Arranca cuando el título ya se escribió, y cada letra entra un
+		   pelito después que la anterior. */
+		animation-delay: calc(1.5s + var(--i) * 40ms);
+	}
+
+	@keyframes subirLetra {
+		to {
+			opacity: 1;
+			transform: none;
+		}
+	}
+
+	/* El botón del parlante late un par de veces al aparecer, para que se note
+	   que ahí se puede silenciar la música. Después se queda quieto. */
+	@keyframes latidoBoton {
+		0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(130, 108, 79, 0.45); }
+		50%      { transform: scale(1.08); box-shadow: 0 0 0 10px rgba(130, 108, 79, 0); }
+	}
+
+	#boton-musica.llamar-atencion {
+		animation: latidoBoton 1.1s ease-out 3;
+	}
+
+	/* Para quien tenga activado "reducir movimiento" en su teléfono: dejamos
+	   solo un desvanecido suave, sin desplazamientos ni escritura. */
+	@media (prefers-reduced-motion: reduce) {
+		#boton-musica.llamar-atencion {
+			animation: none;
+		}
+
+		.con-js .revelar,
+		.con-js .revelar-suave {
+			transform: none;
+			transition: opacity 0.4s ease-out;
+		}
+
+		.con-js .escritura-portada,
+		.con-js .escritura-scroll {
+			clip-path: none;
+			animation: none;
+		}
+
+		.con-js .letra {
+			opacity: 1;
+			transform: none;
+			animation: none;
+		}
+	}
+</style>
+
+<script>
+	const elementos = document.querySelectorAll('.revelar, .revelar-suave');
+
+	// Si el navegador es antiguo y no soporta IntersectionObserver, mostramos
+	// todo de una vez en lugar de dejarlo invisible.
+	if (!('IntersectionObserver' in window)) {
+		elementos.forEach((el) => el.classList.add('visible'));
+	} else {
+		const observador = new IntersectionObserver(
+			(entradas) => {
+				entradas.forEach((entrada) => {
+					if (!entrada.isIntersecting) return;
+					entrada.target.classList.add('visible');
+					// Una vez que apareció, lo dejamos tranquilo: la animación
+					// no se repite al volver a subir.
+					observador.unobserve(entrada.target);
+				});
+			},
+			{
+				// El margen inferior adelanta un poco la aparición, pero tiene que
+				// ser chico: si recorta más de lo que el último elemento dista del
+				// final de la página, ese elemento nunca llega a "entrar" y se
+				// queda invisible para siempre (le pasaba al pie de página).
+				rootMargin: '0px 0px -40px 0px',
+				// threshold 0 a propósito: con un valor mayor, una sección más alta
+				// que la pantalla nunca alcanzaría el porcentaje y no aparecería.
+				threshold: 0,
+			},
+		);
+
+		elementos.forEach((el) => observador.observe(el));
+	}
+
+	// --- Subtítulo letra por letra ---
+	// Partimos el texto en <span>. Para quien usa lector de pantalla dejamos la
+	// frase completa en aria-label y escondemos las letras sueltas, porque si
+	// no las leería una por una: "d", "e", "t"...
+	const prefiereMenosMovimiento = window.matchMedia(
+		'(prefers-reduced-motion: reduce)',
+	).matches;
+
+	if (!prefiereMenosMovimiento) {
+		document.querySelectorAll<HTMLElement>('[data-letras]').forEach((el) => {
+			const texto = (el.textContent ?? '').trim();
+			if (!texto) return;
+
+			el.setAttribute('aria-label', texto);
+			el.textContent = '';
+
+			[...texto].forEach((caracter, i) => {
+				const span = document.createElement('span');
+				span.className = 'letra';
+				// El espacio normal se colapsaría al ser un span vacío.
+				span.textContent = caracter === ' ' ? ' ' : caracter;
+				span.style.setProperty('--i', String(i));
+				span.setAttribute('aria-hidden', 'true');
+				el.appendChild(span);
+			});
+		});
+	}
+</script>
+
+<script>
+	const button = document.getElementById('open-envelope-btn');
+	const flap = document.getElementById('envelope-flap');
+	const card = document.getElementById('envelope-card');
+	const container = document.getElementById('envelope-container');
+	const hint = document.getElementById('envelope-hint');
+
+	// --- Música ---
+	const musica = document.getElementById('musica') as HTMLAudioElement | null;
+	const botonMusica = document.getElementById('boton-musica');
+	const iconoSonando = document.getElementById('icono-sonando');
+	const iconoSilencio = document.getElementById('icono-silencio');
+
+	const VOLUMEN_MAXIMO = 0.45;
+
+	const pintarBoton = (sonando: boolean) => {
+		iconoSonando?.classList.toggle('hidden', !sonando);
+		iconoSilencio?.classList.toggle('hidden', sonando);
+		botonMusica?.setAttribute('aria-pressed', String(!sonando));
+		botonMusica?.setAttribute(
+			'aria-label',
+			sonando ? 'Silenciar la música' : 'Activar la música',
+		);
+	};
+
+	const mostrarBoton = () => {
+		botonMusica?.classList.remove('opacity-0', 'pointer-events-none');
+		botonMusica?.classList.add('llamar-atencion');
+		// Quitamos la clase al terminar para que el latido no vuelva a saltar si
+		// después se toca el botón.
+		botonMusica?.addEventListener(
+			'animationend',
+			() => botonMusica.classList.remove('llamar-atencion'),
+			{ once: true },
+		);
+	};
+
+	// Sube el volumen de a poco, para que la canción no entre de golpe.
+	const subirVolumenSuave = () => {
+		if (!musica) return;
+		musica.volume = 0;
+		const paso = setInterval(() => {
+			if (!musica || musica.volume >= VOLUMEN_MAXIMO - 0.01) {
+				if (musica) musica.volume = VOLUMEN_MAXIMO;
+				clearInterval(paso);
+				return;
+			}
+			musica.volume = Math.min(VOLUMEN_MAXIMO, musica.volume + 0.03);
+		}, 120);
+	};
+
+	const iniciarMusica = () => {
+		if (!musica) return;
+		subirVolumenSuave();
+		// play() devuelve una promesa que puede fallar (el navegador la bloquea,
+		// o el archivo no existe). Si pasa, dejamos el botón en "silenciado"
+		// para que se pueda encender a mano en vez de quedar en un estado raro.
+		musica
+			.play()
+			.then(() => pintarBoton(true))
+			.catch((err) => {
+				console.warn('No se pudo reproducir la música:', err);
+				pintarBoton(false);
+			});
+	};
+
+	botonMusica?.addEventListener('click', () => {
+		if (!musica) return;
+		if (musica.paused) {
+			musica.play().then(() => pintarBoton(true)).catch(() => pintarBoton(false));
+		} else {
+			musica.pause();
+			pintarBoton(false);
+		}
+	});
+
+	button?.addEventListener('click', () => {
+		// La canción arranca aquí, dentro del toque de la persona: es la única
+		// forma de que el navegador la deje sonar.
+		iniciarMusica();
+		mostrarBoton();
+
+		// 1. Desvanecer el botón de abrir y la pista
+		if (button) {
+			button.style.transform = 'translate(-50%, -50%) scale(0)';
+			button.style.opacity = '0';
+			button.style.pointerEvents = 'none';
+		}
+		if (hint) {
+			hint.style.opacity = '0';
+			hint.style.transition = 'opacity 0.4s';
+		}
+
+		// 2. Abrir la solapa rotando en 3D hacia arriba
+		if (flap) {
+			flap.style.transform = 'rotateX(180deg)';
+			// Bajamos su z-index a la mitad de la animación para que quede detrás de la carta
+			setTimeout(() => {
+				flap.style.zIndex = '0';
+			}, 350);
+		}
+
+		// 3. Deslizar la tarjeta de invitación hacia arriba sacándola del sobre
+		setTimeout(() => {
+			if (card) {
+				card.style.transform = 'translateY(-220px) scale(1.05)';
+				card.style.zIndex = '45';
+			}
+		}, 700);
+
+		// 4. Desvanecer todo el sobre y revelar la página principal
+		setTimeout(() => {
+			// Damos la señal para que el título empiece a "escribirse". Va aquí,
+			// junto con el desvanecido del sobre, para que las dos cosas se
+			// solapen y la escritura se vea aparecer.
+			document.documentElement.classList.add('sobre-abierto');
+
+			if (container) {
+				container.style.opacity = '0';
+				container.style.pointerEvents = 'none';
+				setTimeout(() => {
+					container.style.display = 'none';
+				}, 1000);
+			}
+		}, 1950);
+	});
+</script>
