@@ -10,7 +10,10 @@ const { title } = Astro.props;
 // Lo que se ve al compartir el enlace por WhatsApp o redes.
 const descripcion = 'Acompáñanos a celebrar la llegada de Thiago. Sábado 10 de octubre, 16:00 hrs · Capilla Barrio Brillador, La Serena.';
 // Absolutas a la fuerza: las vistas previas no entienden rutas relativas.
-const imagen = new URL('/og.jpg', Astro.site).href;
+// El ?v= sirve para obligar a WhatsApp y compañía a bajar la imagen de nuevo:
+// la guardan en cache por direccion, asi que si cambias el archivo hay que
+// subir este numero para que no sigan mostrando la version vieja.
+const imagen = new URL('/og.jpg?v=2', Astro.site).href;
 const direccion = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
