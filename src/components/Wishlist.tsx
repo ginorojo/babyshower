@@ -255,8 +255,8 @@ export default function Wishlist() {
         <p className="text-md text-[#826c4f] mt-2 max-w-xs mx-auto leading-relaxed font-medium">
           Si quieres tener un detalle con nuestro bebé, aquí están las cositas
           que nos faltan para su llegada. Marca la que te gustaría llevar y
-          queda reservada a tu nombre, así no se repiten los regalos. Puedes
-          elegir más de una y la cantidad que quieras.
+          queda reservada a tu nombre. Puedes elegir más de una y la cantidad
+          que quieras.
         </p>
         <p className="text-sm text-[#826c4f]/75 mt-3 max-w-xs mx-auto leading-relaxed font-medium italic">
           Lo más importante para nosotros es que nos acompañes.
