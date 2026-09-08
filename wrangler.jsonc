@@ -1,0 +1,20 @@
+{
+  // Este sitio es ESTÁTICO: no lleva el adaptador @astrojs/cloudflare como
+  // `lucky` o `gino-portfolio`, porque no necesita servidor. Al no haber
+  // "main", el Worker se limita a servir los archivos de ./dist.
+  //
+  // Para publicar:  npm run deploy
+  //
+  // Ojo: las claves de Supabase (PUBLIC_SUPABASE_URL y PUBLIC_SUPABASE_ANON_KEY)
+  // se incrustan al compilar, o sea que salen del archivo .env de tu computador.
+  // No hay que configurarlas en el panel de Cloudflare.
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "babyshower",
+  "compatibility_date": "2026-09-08",
+  "assets": {
+    "directory": "./dist"
+  },
+  "observability": {
+    "enabled": true
+  }
+}
