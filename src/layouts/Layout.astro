@@ -7,13 +7,16 @@ interface Props {
 
 const { title } = Astro.props;
 
-// Lo que se ve al compartir el enlace por WhatsApp o redes.
-const descripcion = 'Acompáñanos a celebrar la llegada de Thiago. Sábado 10 de octubre, 16:00 hrs · Capilla Barrio Brillador, La Serena.';
+// Lo que se ve al compartir el enlace por WhatsApp o redes. El titulo va
+// aparte del <title> de la pestaña: en la vista previa queremos que se lea
+// como una invitacion, no como el nombre de una web.
+const tituloCompartir = 'Invitación de Baby Shower de Thiago';
+const descripcion = 'Haz clic aquí para ver la invitación completa.';
 // Absolutas a la fuerza: las vistas previas no entienden rutas relativas.
 // El ?v= sirve para obligar a WhatsApp y compañía a bajar la imagen de nuevo:
 // la guardan en cache por direccion, asi que si cambias el archivo hay que
 // subir este numero para que no sigan mostrando la version vieja.
-const imagen = new URL('/og.jpg?v=3', Astro.site).href;
+const imagen = new URL('/og.jpg?v=4', Astro.site).href;
 const direccion = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
@@ -31,20 +34,20 @@ const direccion = new URL(Astro.url.pathname, Astro.site).href;
 		<!-- Vista previa al compartir el enlace (WhatsApp, Facebook, Instagram) -->
 		<meta property="og:type" content="website" />
 		<meta property="og:site_name" content="Baby Shower de Thiago" />
-		<meta property="og:title" content={title} />
+		<meta property="og:title" content={tituloCompartir} />
 		<meta property="og:description" content={descripcion} />
 		<meta property="og:url" content={direccion} />
 		<meta property="og:image" content={imagen} />
 		<meta property="og:image:secure_url" content={imagen} />
 		<meta property="og:image:type" content="image/jpeg" />
 		<meta property="og:image:width" content="1200" />
-		<meta property="og:image:height" content="1200" />
+		<meta property="og:image:height" content="628" />
 		<meta property="og:image:alt" content="Invitación al Baby Shower de Thiago" />
 		<meta property="og:locale" content="es_CL" />
 
 		<!-- Lo mismo para X/Twitter, que usa sus propias etiquetas -->
 		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content={title} />
+		<meta name="twitter:title" content={tituloCompartir} />
 		<meta name="twitter:description" content={descripcion} />
 		<meta name="twitter:image" content={imagen} />
 
