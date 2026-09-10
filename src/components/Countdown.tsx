@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-// Fecha objetivo del evento: sábado 10 de Octubre de 2026 a las 16:00 hrs.
+// Fecha objetivo del evento: sábado 3 de Octubre de 2026 a las 18:30 hrs.
 // Si cambias esta fecha, acuérdate de cambiar también el texto de
 // src/pages/index.astro (sección "¿cuándo?").
-const TARGET_DATE = new Date('2026-10-10T16:00:00');
+const TARGET_DATE = new Date('2026-10-03T18:30:00');
 
 export default function Countdown() {
   const [timeLeft, setTimeLeft] = useState({
