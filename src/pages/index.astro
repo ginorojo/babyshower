@@ -2,6 +2,17 @@
 import Layout from '../layouts/Layout.astro';
 import Wishlist from '../components/Wishlist';
 import Countdown from '../components/Countdown';
+
+// Enlace de pago de PayPal, para quienes estan fuera de Chile.
+//
+// Va codificado en base64 a proposito: dentro lleva el correo, y si
+// estuviera en texto plano los robots que rastrean paginas lo cosecharian
+// para mandar spam. Asi el boton funciona igual pero el correo no queda a
+// la vista en el codigo fuente.
+//
+// Para cambiarlo, genera el nuevo valor con:
+//   node -e "console.log(Buffer.from('TU_URL','utf8').toString('base64'))"
+const paypalCodificado = 'aHR0cHM6Ly93d3cucGF5cGFsLmNvbS9kb25hdGUvP2J1c2luZXNzPUdpbm9yb2pvaiU0MGdtYWlsLmNvbSZjdXJyZW5jeV9jb2RlPVVTRCZub19yZWN1cnJpbmc9MSZpdGVtX25hbWU9UmVnYWxvJTIwcGFyYSUyMFRoaWFnbw==';
 ---
 
 <Layout title="Baby Shower - ¡Te Invitamos!">
@@ -180,7 +191,39 @@ import Countdown from '../components/Countdown';
 			<Wishlist client:load />
 		</section>
 
-		
+		<!-- Para quienes están lejos: PayPal -->
+		<section class="revelar w-full">
+			<div class="bg-white border border-[#826c4f]/25 rounded-xl shadow-sm px-5 py-6 flex flex-col items-center text-center gap-3">
+				<span class="w-12 h-12 rounded-full bg-[#ebdcb9]/60 border border-[#826c4f]/20 flex items-center justify-center shrink-0">
+					<svg width="22" height="24" viewBox="0 0 24 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+						<path fill="#009cde" d="M10.4 6.6h5.9c3.3 0 5.3 1.9 4.9 5-.5 3.4-3.1 5.3-6.5 5.3h-2.3c-.5 0-.9.4-1 .9l-.9 5.9c-.05.33-.33.57-.66.57H6.6c-.38 0-.67-.33-.62-.71L9.7 7.17c.05-.33.33-.57.7-.57z"/>
+						<path fill="#003087" d="M6.3 2.3h5.9c3.3 0 5.3 1.9 4.9 5-.5 3.4-3.1 5.3-6.5 5.3H8.3c-.5 0-.9.4-1 .9l-.9 5.9c-.05.33-.33.57-.66.57H2.5c-.38 0-.67-.33-.62-.71L5.6 2.87c.05-.33.33-.57.7-.57z"/>
+					</svg>
+				</span>
+
+				<p class="text-sm text-[#826c4f] font-medium leading-relaxed max-w-xs">
+					Sabemos la distancia y el esfuerzo que implica acompañarnos, así que
+					tu presencia y tus buenos deseos son nuestro mayor regalo. Para
+					nuestros amigos y familiares en el extranjero que nos han preguntado
+					con cariño cómo hacernos llegar un presente, dejamos habilitada
+					nuestra cuenta de PayPal.
+				</p>
+
+				<button
+					id="boton-paypal"
+					type="button"
+					data-destino={paypalCodificado}
+					class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#826c4f] text-white text-[11px] uppercase font-bold tracking-widest hover:bg-[#6e5a40] transition-colors shadow-sm cursor-pointer"
+				>
+					Enviar un regalo por PayPal
+				</button>
+
+				<p class="text-[11px] text-[#826c4f]/60 font-medium leading-snug max-w-xs">
+					Se abre PayPal, donde eliges el monto. También se puede pagar con
+					tarjeta, sin necesidad de tener cuenta.
+				</p>
+			</div>
+		</section>
 
 		<!-- Mensaje de Invitación Emotivo -->
 		<section class="revelar w-full px-2 text-center text-[#826c4f]">
@@ -346,6 +389,16 @@ import Countdown from '../components/Countdown';
 
 		elementos.forEach((el) => observador.observe(el));
 	}
+
+	// --- Boton de PayPal ---
+	// El destino viene codificado para que el correo no quede legible en el
+	// codigo fuente de la pagina (ver el comentario en el frontmatter).
+	const botonPaypal = document.getElementById('boton-paypal');
+	botonPaypal?.addEventListener('click', () => {
+		const codificado = botonPaypal.dataset.destino;
+		if (!codificado) return;
+		window.open(atob(codificado), '_blank', 'noopener,noreferrer');
+	});
 
 	// --- Subtítulo letra por letra ---
 	// Partimos el texto en <span>. Para quien usa lector de pantalla dejamos la
