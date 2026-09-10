@@ -222,6 +222,11 @@ const paypalCodificado = 'aHR0cHM6Ly93d3cucGF5cGFsLmNvbS9kb25hdGUvP2J1c2luZXNzPU
 					Se abre PayPal, donde eliges el monto. También se puede pagar con
 					tarjeta, sin necesidad de tener cuenta.
 				</p>
+
+				<!-- El correo lo rellena el navegador, no viene en el HTML: así el
+				     invitado puede contrastar lo que ve en PayPal, pero los robots
+				     de spam no lo cosechan. -->
+				<p id="aviso-paypal" class="text-[11px] text-[#826c4f]/60 font-medium leading-snug max-w-xs"></p>
 			</div>
 		</section>
 
@@ -399,6 +404,22 @@ const paypalCodificado = 'aHR0cHM6Ly93d3cucGF5cGFsLmNvbS9kb25hdGUvP2J1c2luZXNzPU
 		if (!codificado) return;
 		window.open(atob(codificado), '_blank', 'noopener,noreferrer');
 	});
+
+	// Le adelantamos al invitado el correo que va a ver en PayPal. Sin esto,
+	// encontrarse de golpe con un gmail suelto y la palabra "Donar" da
+	// desconfianza y hay quien no termina de enviar.
+	// Se saca del mismo enlace codificado, así nunca se desincroniza.
+	const avisoPaypal = document.getElementById('aviso-paypal');
+	if (botonPaypal?.dataset.destino && avisoPaypal) {
+		try {
+			const correo = new URL(atob(botonPaypal.dataset.destino)).searchParams.get('business');
+			if (correo) {
+				avisoPaypal.textContent = `Verás «Donar a ${correo}» — esa es nuestra cuenta.`;
+			}
+		} catch (err) {
+			console.warn('No se pudo leer el correo de PayPal:', err);
+		}
+	}
 
 	// --- Subtítulo letra por letra ---
 	// Partimos el texto en <span>. Para quien usa lector de pantalla dejamos la
